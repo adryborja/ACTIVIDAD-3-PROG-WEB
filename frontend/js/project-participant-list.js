@@ -25,16 +25,39 @@ class ProjectParticipantList extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 table {
-                    width: 100%;
-                    border-collapse: collapse;
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-top: 1rem;
                 }
                 th, td {
-                    padding: 0.5rem;
+                    padding: 0.75rem;
                     border: 1px solid #ddd;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f5f5f5;
+                }
+                select {
+                padding: 0.5rem;
+                border: 1px solid #dddd;
+                margin-right: 15px;
+                border-radius: 4px;
+                flex: 1;
                 }
                 button {
-                    padding: 0.5rem;
-                    cursor: pointer;
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                }
+
+                #asignar-btn {
+                background-color: #4CAF50;
+                color: white;
+                }
+                .eliminar-btn {
+                background-color: #f44336;
+                color: white;
                 }
             </style>
             <h2>Asignaciones</h2>

@@ -12,11 +12,14 @@ class HeaderComponent extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 header {
-                    background-color: #34495e;
+                    background-color: #333;
                     color: white;
+                    padding: 15px;
                     text-align: center;
-                    padding: 1rem;
+                    font-size: 1.5em;
+                    font-family: Arial, sans-serif;
                 }
+                
             </style>
             <header>
                 <h1>Gestión de Proyectos</h1>

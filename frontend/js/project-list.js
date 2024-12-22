@@ -33,14 +33,20 @@ class ProjectList extends HTMLElement {
                   display: flex;
                   gap: 0.5rem;
               }
-              .btn-editar {
-                  background-color: #4CAF50;
-                  color: white;
-              }
-              .btn-eliminar {
-                  background-color: #f44336;
-                  color: white;
-              }
+              button {
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .btn-editar {
+                background-color: #4CAF50;
+                color: white;
+            }
+            .btn-eliminar {
+                background-color: #f44336;
+                color: white;
+            }
           </style>
           <div class="container">
               <button id="nuevo-proyecto" class="btn-nuevo">Nuevo Proyecto</button>

@@ -13,30 +13,32 @@ class NavComponent extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 nav {
-                    background-color: #34495e;
-                    padding: 1rem;
+                    background-color: darkslategrey;
+                    padding: 2rem;
+                    
                 }
                 ul {
                     list-style: none;
                     margin: 0;
+                    padding: 0;
+                    margin-right: 10px;
                     display: flex;
                     gap: 1rem;
                 }
                 a {
                     color: white;
                     text-decoration: none;
-                    padding: 0.5rem 1rem;
                     cursor: pointer;
+                    font-size: 1em;
                 }
-                .active {
-                    background-color: #2c3e50;
-                    border-radius: 4px;
-                }
+                
             </style>
             <nav>
                 <ul>
+                    <li><a href="#home">Inicio</a></li
                     <li><a href="projects" class="active">Proyectos</a></li>
                     <li><a href="participants">Participantes</a></li>
+
                 </ul>
             </nav>
         `;

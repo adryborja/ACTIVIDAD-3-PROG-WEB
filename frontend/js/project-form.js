@@ -14,9 +14,18 @@ class ProjectForm extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 .form-container {
-                    padding: 1rem;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
+                max-width: 600px;
+                margin: 2rem auto;
+                padding: 2rem;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
                 }
                 input, textarea, button {
                     display: block;

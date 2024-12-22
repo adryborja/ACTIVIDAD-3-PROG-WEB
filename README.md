@@ -15,7 +15,7 @@ La base de datos "db_proyecto" es el núcleo de almacenamiento de datos de la ap
   - `descripcion`: Descripción detallada del proyecto.
   - `fecha_inicio`: Fecha de inicio del proyecto.
   - `fecha_fin`: Fecha de finalización del proyecto.
-  - `estado`: Estado actual del proyecto (Activo, Completado, Cancelado).
+  
 
 - **Participantes**:
   - `id`: Identificador único del participante.
@@ -23,7 +23,7 @@ La base de datos "db_proyecto" es el núcleo de almacenamiento de datos de la ap
   - `apellido`: Apellido del participante.
   - `email`: Correo electrónico del participante, debe ser único.
   - `rol`: Rol o posición del participante dentro del proyecto.
-  - `estado`: Estado del participante (Activo, Inactivo).
+
 
 ## Interfaz de Usuario
 

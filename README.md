@@ -15,7 +15,7 @@ La base de datos "db_proyecto" es el núcleo de almacenamiento de datos de la ap
   - `descripcion`: Descripción detallada del proyecto.
   - `fecha_inicio`: Fecha de inicio del proyecto.
   - `fecha_fin`: Fecha de finalización del proyecto.
-  
+  - `estado`: Estado actual del proyecto (Activo, Completado, Cancelado).
 
 - **Participantes**:
   - `id`: Identificador único del participante.
@@ -23,7 +23,7 @@ La base de datos "db_proyecto" es el núcleo de almacenamiento de datos de la ap
   - `apellido`: Apellido del participante.
   - `email`: Correo electrónico del participante, debe ser único.
   - `rol`: Rol o posición del participante dentro del proyecto.
-
+  - `estado`: Estado del participante (Activo, Inactivo).
 
 ## Interfaz de Usuario
 
@@ -49,15 +49,208 @@ Para que la aplicación funcione correctamente, es necesario configurar algunos 
   
 - **Puerto de Ejecución**: El puerto 5000 se utiliza para ejecutar la API en localhost. Es importante asegurarse de que este puerto esté libre y no esté siendo utilizado por otro servicio.
 
-## Aspectos no Implementados en la Aplicación
+## Endpoints de la API
 
-En la implementación actual del proyecto, hay algunos aspectos que no se han considerado pero que podrían mejorar la funcionalidad y la experiencia del usuario:
+A continuación se describen los endpoints implementados en el archivo `index.js` para gestionar los datos de proyectos, participantes y asignaciones:
 
-1. **Autenticación y Autorización**:
-   - No se ha implementado ningún mecanismo de autenticación y autorización en la API. Esto significa que cualquier persona con acceso a la API puede realizar operaciones CRUD en la base de datos. Implementar un sistema de autenticación (por ejemplo, utilizando JWT - JSON Web Tokens) ayudaría a asegurar que solo usuarios autorizados puedan acceder y modificar los datos.
+### **Endpoints de Proyectos**
+1. **`GET /proyectos`**  
+   - Descripción: Obtiene la lista de todos los proyectos.  
+   - Respuesta: Devuelve un array de objetos de proyectos.  
+   - Código:
+     ```javascript
+     app.get('/proyectos', (req, res) => {
+         db.query('SELECT * FROM proyectos', (error, results) => {
+             if (error) return res.status(500).json({ error: error.message });
+             res.json(results);
+         });
+     });
+     ```
 
-2. **Validación y Manejo de Errores en el Frontend**:
-   - Actualmente, no hay validación de datos en los formularios del frontend más allá de los atributos `required`. Una mejora sería añadir validaciones adicionales (por ejemplo, validación de formatos de correo electrónico, longitud mínima/máxima de los campos) y mostrar mensajes de error amigables al usuario. Además, sería beneficioso tener un manejo más robusto de errores para mostrar mensajes claros cuando algo va mal en las solicitudes a la API.
+2. **`POST /proyectos`**  
+   - Descripción: Crea un nuevo proyecto.  
+   - Respuesta: Devuelve el ID del proyecto creado y un mensaje de éxito.  
+   - Código:
+     ```javascript
+     app.post('/proyectos', (req, res) => {
+         const { nombre, descripcion, fecha_inicio, fecha_fin } = req.body;
+         db.query(
+             'INSERT INTO proyectos (nombre, descripcion, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?)',
+             [nombre, descripcion, fecha_inicio, fecha_fin],
+             (error, results) => {
+                 if (error) return res.status(500).json({ error: error.message });
+                 res.status(201).json({ id: results.insertId, message: 'Proyecto creado exitosamente' });
+             }
+         );
+     });
+     ```
+
+3. **`PUT /proyectos/:id`**  
+   - Descripción: Actualiza un proyecto existente.  
+   - Respuesta: Devuelve un mensaje de éxito si se actualiza correctamente.  
+   - Código:
+     ```javascript
+     app.put('/proyectos/:id', (req, res) => {
+         const { id } = req.params;
+         const { nombre, descripcion, fecha_inicio, fecha_fin } = req.body;
+         db.query(
+             'UPDATE proyectos SET nombre = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?',
+             [nombre, descripcion, fecha_inicio, fecha_fin, id],
+             (error, results) => {
+                 if (error) return res.status(500).json({ error: error.message });
+                 if (results.affectedRows === 0) return res.status(404).json({ error: 'Proyecto no encontrado' });
+                 res.status(200).json({ message: 'Proyecto actualizado exitosamente' });
+             }
+         );
+     });
+     ```
+
+4. **`DELETE /proyectos/:id`**  
+   - Descripción: Elimina un proyecto por su ID.  
+   - Respuesta: Devuelve un mensaje de éxito si se elimina correctamente.  
+   - Código:
+     ```javascript
+     app.delete('/proyectos/:id', (req, res) => {
+         db.query('DELETE FROM proyectos WHERE id = ?', [req.params.id], (error, results) => {
+             if (error) return res.status(500).json({ error: error.message });
+             if (results.affectedRows === 0) return res.status(404).json({ error: 'Proyecto no encontrado' });
+             res.status(200).json({ message: 'Proyecto eliminado exitosamente' });
+         });
+     });
+     ```
+
+### **Endpoints de Participantes**
+5. **`GET /participantes`**  
+   - Descripción: Obtiene la lista de todos los participantes.  
+   - Respuesta: Devuelve un array de objetos de participantes.  
+   - Código:
+     ```javascript
+     app.get('/participantes', (req, res) => {
+         db.query('SELECT * FROM participantes', (error, results) => {
+             if (error) return res.status(500).json({ error: error.message });
+             res.json(results);
+         });
+     });
+     ```
+
+6. **`POST /participantes`**  
+   - Descripción: Crea un nuevo participante.  
+   - Respuesta: Devuelve el ID del participante creado y un mensaje de éxito.  
+   - Código:
+     ```javascript
+     app.post('/participantes', (req, res) => {
+         const { nombre, apellido, email, rol } = req.body;
+         db.query(
+             'INSERT INTO participantes (nombre, apellido, email, rol) VALUES (?, ?, ?, ?)',
+             [nombre, apellido, email, rol],
+             (error, results) => {
+                 if (error) return res.status(500).json({ error: error.message });
+                 res.status(201).json({ id: results.insertId, message: 'Participante creado exitosamente' });
+             }
+         );
+     });
+     ```
+
+7. **`PUT /participantes/:id`**  
+   - Descripción: Actualiza un participante existente.  
+   - Respuesta: Devuelve un mensaje de éxito si se actualiza correctamente.  
+   - Código:
+     ```javascript
+     app.put('/participantes/:id', (req, res) => {
+         const { id } = req.params;
+         const { nombre, apellido, email, rol } = req.body;
+         db.query(
+             'UPDATE participantes SET nombre = ?, apellido = ?, email = ?, rol = ? WHERE id = ?',
+             [nombre, apellido, email, rol, id],
+             (error, results) => {
+                 if (error) return res.status(500).json({ error: error.message });
+                 if (results.affectedRows === 0) return res.status(404).json({ error: 'Participante no encontrado' });
+                 res.status(200).json({ message: 'Participante actualizado exitosamente' });
+             }
+         );
+     });
+     ```
+
+8. **`DELETE /participantes/:id`**  
+   - Descripción: Elimina un participante por su ID.  
+   - Respuesta: Devuelve un mensaje de éxito si se elimina correctamente.  
+   - Código:
+     ```javascript
+     app.delete('/participantes/:id', (req, res) => {
+         db.query('DELETE FROM participantes WHERE id = ?', [req.params.id], (error, results) => {
+             if (error) return res.status(500).json({ error: error.message });
+             if (results.affectedRows === 0) return res.status(404).json({ error: 'Participante no encontrado' });
+             res.status(200).json({ message: 'Participante eliminado exitosamente' });
+         });
+     });
+     ```
+
+### **Endpoints de Asignaciones**
+9. **`GET /asignaciones`**  
+   - Descripción: Obtiene todas las asignaciones entre proyectos y participantes.  
+   - Respuesta: Devuelve un array de objetos que relacionan proyectos y participantes.  
+   - Código:
+     ```javascript
+     app.get('/asignaciones', (req, res) => {
+         db.query(
+             `SELECT pp.proyecto_id, p.nombre AS proyecto, pp.participante_id, pa.nombre AS participante, pa.apellido 
+              FROM proyecto_participante pp
+              JOIN proyectos p ON pp.proyecto_id = p.id
+              JOIN participantes pa ON pp.participante_id = pa.id`,
+             (error, results) => {
+                 if (error) return res.status(500).json({ error: error.message });
+                 res.json(results);
+             }
+         );
+     });
+     ```
+
+10. **`POST /asignaciones`**  
+    - Descripción: Crea una asignación entre un proyecto y un participante.  
+    - Respuesta: Devuelve un mensaje de éxito si se crea correctamente.  
+    - Código:
+      ```javascript
+      app.post('/asignaciones', (req, res) => {
+          const { proyecto_id, participante_id } = req.body;
+
+          if (!proyecto_id || !participante_id) {
+              return res.status(400).json({ error: 'Faltan datos requeridos (proyecto_id o participante_id)' });
+          }
+
+          db.query(
+              'INSERT INTO proyecto_participante (proyecto_id, participante_id) VALUES (?, ?)',
+              [proyecto_id, participante_id],
+              (error, results) => {
+                  if (error) {
+                      if (error.code === 'ER_DUP_ENTRY') {
+                          return res.status(400).json({ error: 'La asignación ya existe' });
+                      }
+                      return res.status(500).json({ error: error.message });
+                  }
+                  res.status(201).json({ message: 'Asignación creada exitosamente' });
+              }
+          );
+      });
+      ```
+
+11. **`DELETE /asignaciones/:proyecto_id/:participante_id`**  
+    - Descripción: Elimina una asignación entre un proyecto y un participante.  
+    - Respuesta: Devuelve un mensaje de éxito si se elimina correctamente.  
+    - Código:
+      ```javascript
+      app.delete('/asignaciones/:proyecto_id/:participante_id', (req, res) => {
+          const { proyecto_id, participante_id } = req.params;
+          db.query(
+              'DELETE FROM proyecto_participante WHERE proyecto_id = ? AND participante_id = ?',
+              [proyecto_id, participante_id],
+              (error, results) => {
+                  if (error) return res.status(500).json({ error: error.message });
+                  if (results.affectedRows === 0) return res.status(404).json({ error: 'Asignación no encontrada' });
+                  res.status(200).json({ message: 'Asignación eliminada exitosamente' });
+              }
+          );
+      });
+
 
 ## Frameworks y Herramientas
 

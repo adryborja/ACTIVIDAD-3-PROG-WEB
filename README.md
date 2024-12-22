@@ -1,7 +1,7 @@
 # Actividad_N-3
 
 *Realizado por:*
-Adriana Borja, Camila Quirola, Genesis Tito y Marcos Chacon
+Adriana Borja, Camila Quirola, Genesis Tito y Marco Chacon
 
 ## LINK VIDEO DEMOSTRATIVO
 

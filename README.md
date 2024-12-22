@@ -3,7 +3,7 @@
 *Realizado por:*
 Adriana Borja, Camila Quirola, Genesis Tito y Marcos Chacon
 
-** LINK VIDEO DEMOSTRATIVO**
+## LINK VIDEO DEMOSTRATIVO
 
 https://drive.google.com/file/d/17HRc3mN3ZYBvw0XUNbvlWiRAyVAPaDfM/view
 

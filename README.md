@@ -1,10 +1,7 @@
 # Actividad_N-3
 
 *Realizado por:*
-Adriana Botja
-Camila Quirola
-Genesis Tito
-Marcos Chacon
+Adriana Borja, Camila Quirola, Genesis Tito y Marcos Chacon
 
 
 **GESTIÓN DE PROYECTOS Y PARTICIPANTES CON CUSTOM ELEMENTS**
